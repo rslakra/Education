@@ -1,9 +1,9 @@
 package com.rslakra.libraryservice.service.impl;
 
-import com.devamatre.framework.core.BeanUtils;
-import com.devamatre.framework.spring.exception.DuplicateRecordException;
-import com.devamatre.framework.spring.exception.InvalidRequestException;
-import com.devamatre.framework.spring.exception.NoRecordFoundException;
+import com.devamatre.appsuite.core.BeanUtils;
+import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.rslakra.libraryservice.persistence.entity.Role;
 import com.rslakra.libraryservice.persistence.repository.RoleRepository;
 import com.rslakra.libraryservice.service.RoleService;
