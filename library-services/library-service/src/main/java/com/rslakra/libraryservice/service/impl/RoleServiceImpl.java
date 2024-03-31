@@ -4,6 +4,9 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
+import com.devamatre.appsuite.spring.filter.Filter;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
+import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.libraryservice.persistence.entity.Role;
 import com.rslakra.libraryservice.persistence.repository.RoleRepository;
 import com.rslakra.libraryservice.service.RoleService;
@@ -24,7 +27,7 @@ import java.util.Optional;
  * @created 10/9/21 5:50 PM
  */
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements RoleService {
 
     // LOGGER
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
@@ -57,9 +60,37 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role getById(Long id) {
         LOGGER.debug("getById({})", id);
-        return roleRepository.findById(id)
-            .orElseThrow(() -> new NoRecordFoundException("id:%d", id));
+        return roleRepository.findById(id).orElseThrow(() -> new NoRecordFoundException("id:%d", id));
+    }
 
+    /**
+     * @param operation
+     * @param role
+     * @return
+     */
+    @Override
+    public Role validate(ServiceOperation operation, Role role) {
+        if (BeanUtils.isNull(role)) {
+            throw new InvalidRequestException();
+        }
+
+        switch (operation) {
+            case CREATE:
+                if (BeanUtils.isNull(role.getName())) {
+                    throw new InvalidRequestException();
+                } else if (roleRepository.findByName(role.getName()).isPresent()) {
+                    throw new DuplicateRecordException("name:%s", role.getName());
+                }
+                break;
+
+            case UPDATE:
+                if (BeanUtils.isNull(role.getId())) {
+                    throw new InvalidRequestException();
+                }
+                break;
+        }
+
+        return role;
     }
 
     /**
@@ -67,43 +98,70 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     @Override
-    public Role upsert(Role role) {
-        LOGGER.debug("+upsert({})", role);
-        Objects.requireNonNull(role);
-        Role oldRole = role;
-        if (BeanUtils.isNull(role.getId())) {
-            if (BeanUtils.isNull(role.getName())) {
-                throw new InvalidRequestException();
-            } else if (roleRepository.findByName(role.getName()).isPresent()) {
-                throw new DuplicateRecordException("name:%s", role.getName());
-            }
-
-            LOGGER.info("Creating {}", role);
-        } else { // update file
-            LOGGER.info("Updating {}", role);
-            oldRole =
-                roleRepository.findById(role.getId())
-                    .orElseThrow(() -> new NoRecordFoundException("roleId:%d", role.getId()));
-
-            // update object
-            BeanUtils.copyProperties(role, oldRole, IGNORED_PROPERTIES);
-        }
-
-        // persist user
-        oldRole = roleRepository.saveAndFlush(oldRole);
-        LOGGER.debug("-upsert(), oldRole:{}", oldRole);
-        return oldRole;
+    public Role create(Role role) {
+        LOGGER.debug("+create({})", role);
+        validate(ServiceOperation.CREATE, role);
+        // persist object
+        role = roleRepository.saveAndFlush(role);
+        LOGGER.debug("-create(), role:{}", role);
+        return role;
     }
 
     /**
-     * @param objectList
+     * @param roles
      * @return
      */
     @Override
-    public List<Role> upsert(List<Role> objectList) {
+    public List<Role> create(List<Role> roles) {
+        final List<Role> createdRoles = new ArrayList<>();
+        roles.forEach(role -> createdRoles.add(create(role)));
+        return createdRoles;
+    }
+
+    /**
+     * @param filter
+     * @return
+     */
+    @Override
+    public List<Role> getByFilter(Filter filter) {
+        return getByFilter(filter, null).getContent();
+    }
+
+    /**
+     * @param filter
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<Role> getByFilter(Filter filter, Pageable pageable) {
+        return roleRepository.findAll(pageable);
+    }
+
+    /**
+     * @param role
+     * @return
+     */
+    @Override
+    public Role update(Role role) {
+        LOGGER.debug("+update({})", role);
+        validate(ServiceOperation.UPDATE, role);
+        Role oldRole = getById(role.getId());
+        // update object
+        BeanUtils.copyProperties(role, oldRole, IGNORED_PROPERTIES);
+        // persist user
+        role = roleRepository.saveAndFlush(oldRole);
+        LOGGER.debug("-update(), role:{}", role);
+        return role;
+    }
+
+    /**
+     * @param roles
+     * @return
+     */
+    @Override
+    public List<Role> update(List<Role> roles) {
         final List<Role> updatedRoles = new ArrayList<>();
-        objectList.forEach(role -> updatedRoles.add(upsert(role)));
-//        return fileRepository.saveAllAndFlush(files);
+        roles.forEach(role -> updatedRoles.add(update(role)));
         return updatedRoles;
     }
 
@@ -131,23 +189,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * @param pageable
+     * @param id
      * @return
      */
     @Override
-    public Page<Role> getByFilter(Pageable pageable) {
-        return roleRepository.findAll(pageable);
-    }
-
-    /**
-     * @param id
-     */
-    @Override
-    public void delete(final Long id) {
+    public Role delete(Long id) {
         LOGGER.debug("delete({})", id);
         Objects.requireNonNull(id);
-        Role role = roleRepository.findById(id).orElseThrow(() -> new NoRecordFoundException("id:%d", id));
+        Role role = getById(id);
         LOGGER.info("Deleting {}", role);
         roleRepository.deleteById(id);
+        return role;
     }
 }

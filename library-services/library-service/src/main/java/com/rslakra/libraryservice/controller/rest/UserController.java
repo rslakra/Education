@@ -1,7 +1,7 @@
 package com.rslakra.libraryservice.controller.rest;
 
-import com.rslakra.libraryservice.persistence.entity.User;
 import com.rslakra.libraryservice.payload.PayloadBuilder;
+import com.rslakra.libraryservice.persistence.entity.User;
 import com.rslakra.libraryservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -122,9 +122,9 @@ public class UserController {
      */
     @GetMapping("/byEmail/{email}")
     @ResponseBody
-//    public List<User> getByEmail(@PathVariable(value = "email") String email) {
+// public List<User> getByEmail(@PathVariable(value = "email") String email) {
 //        return userService.getByEmail(email);
-//    }
+// }
     public User getByEmail(@PathVariable(value = "email") String email) {
         return userService.getByEmail(email);
     }
@@ -135,7 +135,7 @@ public class UserController {
      */
     @GetMapping("/filter")
     public Page<User> getByFilter(Pageable pageable) {
-        return userService.getByFilter(pageable);
+        return userService.getByFilter(null, pageable);
     }
 
     /**
@@ -152,7 +152,7 @@ public class UserController {
     public User createUser(
         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Create new user", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)), required = true)
         @Validated @RequestBody User user) {
-        return userService.upsert(user);
+        return userService.create(user);
     }
 
     /**
@@ -162,7 +162,7 @@ public class UserController {
     @PutMapping
     @ResponseBody
     public ResponseEntity<User> updateUser(@Validated @RequestBody User user) {
-        return ResponseEntity.ok(userService.upsert(user));
+        return ResponseEntity.ok(userService.update(user));
     }
 
     /**
@@ -172,7 +172,7 @@ public class UserController {
     @PostMapping("/batch")
     @ResponseBody
     public List<User> upsert(@RequestBody List<User> users) {
-        return userService.upsert(users);
+        return userService.update(users);
     }
 
     /**
@@ -184,7 +184,7 @@ public class UserController {
     public ResponseEntity<PayloadBuilder> delete(@PathVariable(value = "userId") Long userId) {
         userService.delete(userId);
         return ResponseEntity.ok(PayloadBuilder.builder()
-                                     .withDeleted( Boolean.TRUE)
+                                     .withDeleted(Boolean.TRUE)
                                      .withMessage("Record with id:" + userId + " deleted successfully!")
         );
     }

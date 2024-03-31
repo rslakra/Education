@@ -4,6 +4,9 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
+import com.devamatre.appsuite.spring.filter.Filter;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
+import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.libraryservice.enums.EntityStatus;
 import com.rslakra.libraryservice.enums.RoleType;
 import com.rslakra.libraryservice.persistence.entity.Role;
@@ -31,7 +34,7 @@ import java.util.Set;
  * @created 10/9/21 5:50 PM
  */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements UserService {
 
     // LOGGER
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -67,6 +70,114 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public User getById(final Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new NoRecordFoundException("userId:%d", userId));
+    }
+
+    /**
+     * @param operation
+     * @param user
+     * @return
+     */
+    @Override
+    public User validate(ServiceOperation operation, User user) {
+        if (BeanUtils.isNull(user)) {
+            throw new InvalidRequestException();
+        }
+
+        switch (operation) {
+            case CREATE:
+                if (BeanUtils.isNull(user.getUserName())) {
+                    throw new InvalidRequestException();
+                } else if (userRepository.getByUserName(user.getUserName()).isPresent()) {
+                    throw new DuplicateRecordException("userName:%s", user.getUserName());
+                }
+                break;
+
+            case UPDATE:
+                if (BeanUtils.isNull(user.getId())) {
+                    throw new InvalidRequestException();
+                }
+                break;
+        }
+
+        return user;
+    }
+
+    /**
+     * @param user
+     * @return
+     */
+    @Override
+    public User create(User user) {
+        LOGGER.debug("+create({})", user);
+        validate(ServiceOperation.CREATE, user);
+        // persist object
+        user = userRepository.saveAndFlush(user);
+        LOGGER.debug("-create(), user:{}", user);
+        return user;
+    }
+
+    /**
+     * @param users
+     * @return
+     */
+    @Override
+    public List<User> create(List<User> users) {
+        LOGGER.debug("+create({})", users);
+        Objects.requireNonNull(users);
+        final List<User> createdUsers = new ArrayList<>();
+        users.forEach(user -> createdUsers.add(create(user)));
+        LOGGER.debug("-create(), createdUsers:{}", createdUsers);
+        return createdUsers;
+    }
+
+    /**
+     * @param filter
+     * @return
+     */
+    @Override
+    public List<User> getByFilter(Filter filter) {
+        return getByFilter(filter, null).getContent();
+    }
+
+    /**
+     * @param filter
+     * @param pageable
+     * @return
+     */
+    @Override
+    public Page<User> getByFilter(Filter filter, Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    /**
+     * @param user
+     * @return
+     */
+    @Override
+    public User update(User user) {
+        LOGGER.debug("+update({})", user);
+        validate(ServiceOperation.UPDATE, user);
+        User oldUser = getById(user.getId());
+        // update object
+        BeanUtils.copyProperties(user, oldUser, IGNORED_PROPERTIES);
+        // persist user
+        user = userRepository.saveAndFlush(oldUser);
+        LOGGER.debug("-update(), user:{}", user);
+        return user;
+    }
+
+    /**
+     * @param users
+     * @return
+     */
+    @Override
+    public List<User> update(List<User> users) {
+        LOGGER.debug("+update({})", users);
+        Objects.requireNonNull(users);
+        final List<User> updatedUsers = new ArrayList<>();
+        users.forEach(user -> updatedUsers.add(update(user)));
+        LOGGER.debug("-update(), updatedUsers:{}", updatedUsers);
+        return updatedUsers;
     }
 
     /**
@@ -136,83 +247,15 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     /**
-     * @param pageable
-     * @return
-     */
-    public Page<User> getByFilter(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
-//    /**
-//     * Upsert file.
-//     *
-//     * @param objectType
-//     * @return
-//     */
-//    @Override
-//    public User upsert(Object objectType) {
-//        return upsert((User) objectType);
-//    }
-
-    /**
-     * Upsert User.
-     *
-     * @param user
-     * @return
-     */
-    public User upsert(User user) {
-        LOGGER.debug("+upsert({})", user);
-        Objects.requireNonNull(user);
-        User oldUser = user;
-        if (BeanUtils.isNull(user.getId())) {
-            if (BeanUtils.isNull(user.getUserName())) {
-                throw new InvalidRequestException();
-            } else if (userRepository.getByUserName(user.getUserName()).isPresent()) {
-                throw new DuplicateRecordException("userName:%s", user.getUserName());
-            }
-
-            LOGGER.info("Creating {}", user);
-        } else { // update object
-            LOGGER.info("Updating {}", user);
-            oldUser =
-                userRepository.findById(user.getId())
-                    .orElseThrow(() -> new NoRecordFoundException("userId:%d", user.getId()));
-
-            // update object
-            BeanUtils.copyProperties(user, oldUser, IGNORED_PROPERTIES);
-        }
-
-        // persist user
-        oldUser = userRepository.saveAndFlush(oldUser);
-        LOGGER.debug("-upsert(), oldUser:{}", oldUser);
-        return oldUser;
-    }
-
-    /**
-     * Upsert Users.
-     *
-     * @param objectList
-     * @return
-     */
-    public List<User> upsert(List objectList) {
-        LOGGER.debug("+upsert({})", objectList);
-        Objects.requireNonNull(objectList);
-        final List<User> updatedUsers = new ArrayList<>();
-        objectList.forEach(user -> updatedUsers.add(upsert((User) user)));
-        LOGGER.debug("-upsert(), updatedUsers:{}", updatedUsers);
-        return updatedUsers;
-    }
-
-    /**
      * @param userId
      */
-    public void delete(Long userId) {
+    public User delete(Long userId) {
         LOGGER.debug("delete({})", userId);
         Objects.requireNonNull(userId);
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new NoRecordFoundException("userId:%d", userId));
+        User user = getById(userId);
         LOGGER.debug("Deleting {}", user);
         userRepository.deleteById(userId);
+        return user;
     }
 
     /**

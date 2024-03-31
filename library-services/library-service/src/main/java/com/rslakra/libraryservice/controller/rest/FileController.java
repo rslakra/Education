@@ -1,7 +1,8 @@
 package com.rslakra.libraryservice.controller.rest;
 
-import com.rslakra.libraryservice.persistence.entity.File;
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.payload.PayloadBuilder;
+import com.rslakra.libraryservice.persistence.entity.File;
 import com.rslakra.libraryservice.service.FileService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Rohtash Lakra
@@ -61,7 +63,13 @@ public class FileController {
      */
     @PostMapping
     public File addFile(@Validated @RequestBody File file) {
-        return fileService.upsert(file);
+        if (Objects.isNull(file)) {
+            throw new InvalidRequestException();
+        } else if (Objects.nonNull(file.getId())) {
+            return fileService.update(file);
+        } else {
+            return fileService.create(file);
+        }
     }
 
     /**
@@ -70,7 +78,11 @@ public class FileController {
      */
     @PostMapping("/batch")
     public List<File> addFiles(@Validated @RequestBody List<File> files) {
-        return fileService.upsert(files);
+        if (Objects.isNull(files)) {
+            throw new InvalidRequestException();
+        } else {
+            return fileService.create(files);
+        }
     }
 
     /**
@@ -79,7 +91,7 @@ public class FileController {
      */
     @PutMapping
     public ResponseEntity<File> updateFile(@Validated @RequestBody File file) {
-        file = fileService.upsert(file);
+        file = fileService.update(file);
         return ResponseEntity.ok(file);
     }
 

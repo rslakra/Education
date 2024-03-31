@@ -1,6 +1,6 @@
 package com.rslakra.libraryclient.entity;
 
-import com.devamatre.appsuite.spring.persistence.entity.AbstractEntity;
+import com.devamatre.appsuite.spring.payload.dto.AbstractEntityDTO;
 import com.rslakra.libraryclient.controller.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User extends AbstractEntity<User> implements Serializable {
+public class User extends AbstractEntityDTO<Long> implements Serializable {
 
     private String userName;
     private String password;

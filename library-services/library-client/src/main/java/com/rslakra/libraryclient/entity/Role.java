@@ -1,6 +1,6 @@
 package com.rslakra.libraryclient.entity;
 
-import com.devamatre.appsuite.spring.persistence.entity.NamedEntity;
+import com.devamatre.appsuite.spring.payload.dto.NamedEntityDTO;
 import com.rslakra.libraryclient.controller.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role extends NamedEntity implements Serializable {
+public class Role extends NamedEntityDTO implements Serializable {
 
     private EntityStatus status = EntityStatus.INACTIVE;
 

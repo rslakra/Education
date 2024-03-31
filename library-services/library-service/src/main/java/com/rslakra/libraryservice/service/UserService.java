@@ -1,7 +1,8 @@
 package com.rslakra.libraryservice.service;
 
-import com.rslakra.libraryservice.persistence.entity.User;
+import com.devamatre.appsuite.spring.service.AbstractService;
 import com.rslakra.libraryservice.enums.RoleType;
+import com.rslakra.libraryservice.persistence.entity.User;
 
 import java.util.List;
 import java.util.Set;
@@ -10,10 +11,9 @@ import java.util.Set;
  * @author Rohtash Lakra
  * @created 8/20/21 8:11 PM
  */
-public interface UserService extends BaseService<User> {
+public interface UserService extends AbstractService<User, Long> {
 
     /**
-     *
      * @param userName
      * @return
      */
@@ -67,24 +67,24 @@ public interface UserService extends BaseService<User> {
      */
     public boolean hasRoles(User user, Set<RoleType> roleTypes);
 
-//    /**
+// /**
 //     * Upsert User.
 //     *
 //     * @param user
 //     * @return
 //     */
-//    public User upsert(User user);
+// public User upsert(User user);
 //
-//    /**
+// /**
 //     * Upsert Users.
 //     *
 //     * @param users
 //     * @return
 //     */
-//    public List<User> upsertUsers(List<User> users);
+// public List<User> upsertUsers(List<User> users);
 
     /**
      * @param userId
      */
-    public void delete(Long userId);
+//    public void delete(Long userId);
 }

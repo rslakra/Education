@@ -11,6 +11,16 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * <pre>
+ *  {
+ *   "title": "Moby Dick",
+ *   "author": "Herman Melville",
+ *   "body": "Some years ago ...",
+ *   "isbn": "1111979723",
+ *   "copiesOwned": 3
+ *  }
+ * </pre>
+ *
  * @author Rohtash Lakra
  * @created 10/9/21 3:56 PM
  */
@@ -24,6 +34,10 @@ public class Book extends NamedEntity<Long> {
 
     @Column(name = "title", length = 64, nullable = false)
     private String title;
+
+    public String author;
+    public String content;
+    public String isbn;
 
     @Column(name = "published_on", nullable = false, updatable = false)
     private Long publishedOn;

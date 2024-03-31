@@ -1,5 +1,6 @@
 package com.rslakra.libraryservice.controller.web;
 
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.persistence.entity.File;
 import com.rslakra.libraryservice.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -33,13 +35,20 @@ public class FileWebController extends AbstractWebController<File> {
     }
 
     /**
-     * @param objectType
+     * @param file
      * @return
      */
     @PostMapping("/save")
     @Override
-    public String save(File objectType) {
-        objectType = fileService.upsert(objectType);
+    public String save(File file) {
+        if (Objects.isNull(file)) {
+            throw new InvalidRequestException();
+        } else if (Objects.nonNull(file.getId())) {
+            file = fileService.update(file);
+        } else {
+            file = fileService.create(file);
+        }
+
         return "redirect:/files/list";
     }
 
@@ -60,9 +69,9 @@ public class FileWebController extends AbstractWebController<File> {
      * @param id
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{id}"})
+    @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String upsert(Model model, @PathVariable(name = "id") Optional<Long> id) {
+    public String upsert(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         File file = null;
         if (id.isPresent()) {
             file = fileService.getById(id.get());

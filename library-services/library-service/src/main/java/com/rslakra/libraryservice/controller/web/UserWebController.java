@@ -1,5 +1,6 @@
 package com.rslakra.libraryservice.controller.web;
 
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.persistence.entity.Role;
 import com.rslakra.libraryservice.persistence.entity.User;
 import com.rslakra.libraryservice.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -39,7 +41,14 @@ public class UserWebController extends AbstractWebController<Role> {
      */
     @PostMapping("/save")
     public String saveUser(User user) {
-        user = userService.upsert(user);
+        if (Objects.isNull(user)) {
+            throw new InvalidRequestException();
+        } else if (Objects.nonNull(user.getId())) {
+            user = userService.update(user);
+        } else {
+            user = userService.create(user);
+        }
+
         return "redirect:/users/list";
     }
 
@@ -59,7 +68,7 @@ public class UserWebController extends AbstractWebController<Role> {
      * @param userId
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{userId}"})
+    @GetMapping(path = {"/create", "/update/{userId}"})
     public String upsertUser(Model model, @PathVariable(name = "userId") Optional<Long> userId) {
         User user = null;
         if (userId.isPresent()) {
@@ -82,7 +91,6 @@ public class UserWebController extends AbstractWebController<Role> {
         userService.delete(userId);
         return "redirect:/users/list";
     }
-
 
 
 }

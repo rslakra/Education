@@ -117,7 +117,14 @@ public class UserServiceImpl implements UserService {
      */
     public User saveUser(User user) {
         Objects.requireNonNull(user);
-        user = restService.postForObject(USERS, user, User.class);
+        if (Objects.nonNull(user.getId())) {
+            final HttpEntity<User> httpEntity = new HttpEntity<>(user, BaseService.newHttpHeaders());
+            // 3. exchange(url, method, requestEntity, responseType)
+            user = restService.exchange(USERS, HttpMethod.PUT, httpEntity, User.class).getBody();
+        } else {
+            user = restService.postForObject(USERS, user, User.class);
+        }
+
         return user;
     }
 

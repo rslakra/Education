@@ -1,5 +1,6 @@
 package com.rslakra.libraryservice.controller.web;
 
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.persistence.entity.Role;
 import com.rslakra.libraryservice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -33,13 +35,20 @@ public class RoleWebController extends AbstractWebController<Role> {
     }
 
     /**
-     * @param objectType
+     * @param role
      * @return
      */
     @PostMapping("/save")
     @Override
-    public String save(Role objectType) {
-        objectType = roleService.upsert(objectType);
+    public String save(Role role) {
+        if (Objects.isNull(role)) {
+            throw new InvalidRequestException();
+        } else if (Objects.nonNull(role.getId())) {
+            role = roleService.update(role);
+        } else {
+            role = roleService.create(role);
+        }
+
         return "redirect:/roles/list";
     }
 
@@ -60,9 +69,9 @@ public class RoleWebController extends AbstractWebController<Role> {
      * @param id
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{id}"})
+    @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String upsert(Model model, @PathVariable(name = "id") Optional<Long> id) {
+    public String upsert(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         Role role = null;
         if (id.isPresent()) {
             role = roleService.getById(id.get());
