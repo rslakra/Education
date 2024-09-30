@@ -1,6 +1,6 @@
 package com.rslakra.libraryservice.service;
 
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.libraryservice.persistence.entity.Role;
 
 import java.util.List;

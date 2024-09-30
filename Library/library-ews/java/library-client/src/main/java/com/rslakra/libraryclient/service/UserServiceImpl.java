@@ -1,7 +1,7 @@
 package com.rslakra.libraryclient.service;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.Payload;
 import com.rslakra.libraryclient.api.BaseService;
 import com.rslakra.libraryclient.api.UserService;
 import com.rslakra.libraryclient.entity.User;

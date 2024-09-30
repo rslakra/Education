@@ -1,6 +1,6 @@
 package com.rslakra.libraryservice.controller.web;
 
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.persistence.entity.Role;
 import com.rslakra.libraryservice.persistence.entity.User;
 import com.rslakra.libraryservice.service.UserService;

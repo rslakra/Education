@@ -1,6 +1,6 @@
 package com.rslakra.libraryservice.controller.rest;
 
-import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
+import com.rslakra.appsuite.spring.exception.NoRecordFoundException;
 import com.rslakra.libraryservice.persistence.entity.File;
 import com.rslakra.libraryservice.persistence.repository.FileRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;

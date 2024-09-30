@@ -1,6 +1,6 @@
 package com.rslakra.libraryservice.enums;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.libraryservice.persistence.entity.Role;
 
 import java.util.Arrays;

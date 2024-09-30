@@ -1,6 +1,6 @@
 package com.rslakra.libraryclient.entity;
 
-import com.devamatre.appsuite.spring.payload.dto.AbstractEntityDTO;
+import com.rslakra.appsuite.spring.payload.dto.AbstractEntityDTO;
 import com.rslakra.libraryclient.controller.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

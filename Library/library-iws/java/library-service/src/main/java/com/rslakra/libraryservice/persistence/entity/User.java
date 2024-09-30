@@ -1,7 +1,7 @@
 package com.rslakra.libraryservice.persistence.entity;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.ToString;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.ToString;
 import com.rslakra.libraryservice.enums.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

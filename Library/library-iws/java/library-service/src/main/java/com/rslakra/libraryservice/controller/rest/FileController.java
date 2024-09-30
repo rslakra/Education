@@ -1,6 +1,6 @@
 package com.rslakra.libraryservice.controller.rest;
 
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.libraryservice.payload.PayloadBuilder;
 import com.rslakra.libraryservice.persistence.entity.File;
 import com.rslakra.libraryservice.service.FileService;

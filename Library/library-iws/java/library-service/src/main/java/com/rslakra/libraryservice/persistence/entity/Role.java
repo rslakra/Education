@@ -1,7 +1,7 @@
 package com.rslakra.libraryservice.persistence.entity;
 
-import com.devamatre.appsuite.core.ToString;
-import com.devamatre.appsuite.spring.persistence.entity.NamedEntity;
+import com.rslakra.appsuite.core.ToString;
+import com.rslakra.appsuite.spring.persistence.entity.NamedEntity;
 import com.rslakra.libraryservice.enums.EntityStatus;
 import com.rslakra.libraryservice.enums.RoleType;
 import lombok.Getter;
