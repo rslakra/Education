@@ -3,14 +3,14 @@
 ## How to create virtual Environment
 
 ### 1. Create Weather Virtual Env
-python3 -m venv venv_weather
+python3 -m venv venv
 
 ### 2. Activate Weather Virtual Env
-source venv_weather/bin/activate
+source venv/bin/activate
 
 Output:
 ```
-(venv_weather) rlakra@YVXKPJV2CN Examples % 
+(venv) rlakra@YVXKPJV2CN Examples % 
 ```
 
 ### 3. Deactivate Weather Virtual Env
@@ -27,6 +27,7 @@ rlakra@YVXKPJV2CN Examples %
 ```
 pip install requests
 pip install beautifulsoup4
+python3 -m pip install -r requirements.txt
 ```
 
 
@@ -36,7 +37,7 @@ brew install python-requests
 
 - Install in specific Env
 # python3 -m venv path/to/venv
-python3 -m venv venv_weather
+python3 -m venv venv
 python3 -m pip install requests
 
 
