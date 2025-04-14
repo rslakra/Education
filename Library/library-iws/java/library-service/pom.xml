@@ -55,7 +55,7 @@
         <swagger.skip>false</swagger.skip>
 
         <!-- mysql -->
-        <mysql.version>8.2.0</mysql.version>
+        <mysql.version>9.2.0</mysql.version>
 
         <!-- csv parser version -->
         <commons-csv.version>1.9.0</commons-csv.version>
