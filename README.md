@@ -1,6 +1,5 @@
-# Education
-
----
+Education
+===
 
 The ```Education``` repository contains all the Education python projects.
 
@@ -11,14 +10,16 @@ The ```Education``` repository contains all the Education python projects.
 
 ```
     /
-    ├── modules                     # The modules
-    ├── <service>                   # The Service
-    |    ├── <service>-iws          # The IWS Service
-    |    ├── webapp                 # The WebApp Service
-    |    └── README.md
+    ├── Library                     # The Library Service
+    ├── Python                      # The Python Learning Module
     └── README.md
 ```
 
+
+
+# Reference
+
+---
 
 
 # Author
