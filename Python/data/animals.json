@@ -1,0 +1,32 @@
+[
+    {
+        "name": "leopard",
+        "class": "mammal",
+        "order": "Carnivora",
+        "max_speed": "58.0"
+    },
+    {
+        "name": "monkey",
+        "class": "mammal",
+        "order": "Primates",
+        "max_speed": "NaN"
+    },
+    {
+        "name": "lion",
+        "class": "mammal",
+        "order": "Carnivora",
+        "max_speed": "80.2"
+    },
+    {
+        "name": "parrot",
+        "class": "bird",
+        "order": "Psittaciformes",
+        "max_speed": "24.0"
+    },
+    {
+        "name": "falcon",
+        "class": "bird",
+        "order": "Falconiformes",
+        "max_speed": "389.0"
+    }
+]
