@@ -18,7 +18,7 @@ print_dir(dirs)
 
 
 # read items of a specific folder
-dir_name = "./.."
+dir_name = "../.."
 data = os.listdir(dir_name)
 print_dir(data)
 print("\n")
