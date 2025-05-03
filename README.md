@@ -11,7 +11,7 @@ The ```Education``` repository contains all the Education python projects.
 ```
     /
     ├── Library                     # The Library Service
-    ├── Python                      # The Python Learning Module
+    ├── eLearning                   # An Online training modules and courses.
     └── README.md
 ```
 
