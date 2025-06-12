@@ -2,12 +2,11 @@ package com.rslakra.libraryservice.persistence.entity;
 
 import com.rslakra.appsuite.core.ToString;
 import com.rslakra.appsuite.spring.persistence.entity.NamedEntity;
+import com.rslakra.libraryservice.enums.EntityStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Rohtash Lakra
@@ -19,13 +18,16 @@ import javax.persistence.Table;
 @EntityListeners(FileEntityListener.class)
 @Table(name = "files")
 public class File extends NamedEntity<Long> {
-
+    
+    @Enumerated(value = EnumType.STRING)
+    private EntityStatus status = EntityStatus.INACTIVE;
+    
     private String contents;
-
+    
     public File() {
         super();
     }
-
+    
     /**
      * @param name
      * @param contents
@@ -34,7 +36,7 @@ public class File extends NamedEntity<Long> {
         super(name);
         this.contents = contents;
     }
-
+    
     /**
      * Returns the string representation of this object.
      *
@@ -43,8 +45,9 @@ public class File extends NamedEntity<Long> {
     @Override
     public String toString() {
         return ToString.of(File.class)
-            .add("name", getName())
-            .add("contents", getContents())
-            .toString();
+                .add("name", getName())
+                .add("status", getStatus())
+                .add("contents", getContents())
+                .toString();
     }
 }

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Global or changelog preconditions are defined at the top of the changelog, prior to any changesets. -->
+    <preConditions onError="HALT" onErrorMessage="Only Supports H2 or MySQL Databases"
+                   onFail="HALT" onFailMessage="Only Supports H2 or MySQL Databases">
+        <dbms type="h2, mysql"/>
+        <!--<sqlCheck expectedResult="9.1.0">-->
+        <!--    SELECT @@version;-->
+        <!--</sqlCheck>-->
+    </preConditions>
+
+    <!-- create sequences -->
+    <changeSet author="rslakra" id="create_sequences">
+        <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <!-- roles -->
+    <changeSet author="rslakra" id="create_roles_table">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] already exists">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_role_id"
+                             unique="true" uniqueConstraintName="uk_role_id"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints unique="true" uniqueConstraintName="uk_role_name"
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- adds default value -->
+        <addDefaultValue columnName="status"
+                         defaultValue="INACTIVE"
+                         defaultValueConstraintName="A String"
+                         tableName="roles"/>
+
+        <!--        <sql dbms="h2, oracle, mysql" endDelimiter=";"-->
+        <!--             splitStatements="true" stripComments="true">-->
+        <!--            <comment>Insert Roles</comment>-->
+        <!--            INSERT INTO roles (name, status, created_on, created_at, created_by, updated_on, updated_at, updated_by)-->
+        <!--            VALUES ('ADMIN', 'INACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--            ('USER', 'INACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--            ('CREATOR', 'INACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--            ('COLLABORATOR', 'INACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--            ('EDITOR', 'INACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra');-->
+        <!--        </sql>-->
+    </changeSet>
+
+    <!-- users -->
+    <changeSet author="rslakra" id="create_users_table">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] already exists">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_id"
+                             unique="true" uniqueConstraintName="uk_user_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_user_name"
+                             nullable="false"/>
+            </column>
+            <column name="password" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_email"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(64)"/>
+            <column name="last_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <!--        <sql dbms="h2, oracle, mysql" endDelimiter=";"-->
+        <!--             splitStatements="true" stripComments="true">-->
+        <!--            <comment>Insert Users</comment>-->
+        <!--            INSERT INTO users (email, password, first_name, last_name, status, role, created_on, created_at, created_by,-->
+        <!--                               updated_on, updated_at, updated_by)-->
+        <!--            VALUES ('rslakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2',-->
+        <!--                    'Rothash Singh', 'Lakra', 'INACTIVE', 'ROLE_ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--                   ('rsingh@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'Rohtash',-->
+        <!--                    'Singh', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--                   ('rlakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'R Singh',-->
+        <!--                    'Lakra', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra');-->
+        <!--        </sql>-->
+    </changeSet>
+
+    <!-- users_roles -->
+    <changeSet author="rslakra" id="create_users_roles_table">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users_roles] already exists">
+            <not>
+                <tableExists tableName="users_roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users_roles">
+            <column name="role_id" type="bigint">
+                <constraints nullable="false" notNullConstraintName="nn_users_roles_role_id"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" notNullConstraintName="nn_users_roles_user_id"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="role_id"
+                                 constraintName="fk_users_roles_role_id"
+                                 referencedTableName="roles" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="user_id"
+                                 constraintName="fk_users_roles_user_id"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- files -->
+    <changeSet author="rslakra" id="create_files_table">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [files] already exists">
+            <not>
+                <tableExists tableName="files"/>
+            </not>
+        </preConditions>
+        <createTable tableName="files">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_file_id"
+                             unique="true" uniqueConstraintName="uk_file_id"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_file_name"
+                             nullable="false"/>
+            </column>
+            <column name="contents" type="varchar(255)">
+                <constraints uniqueConstraintName="uk_file_history_contents"
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- file_history -->
+    <changeSet author="rslakra" id="create_file_history_table">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [file_history] already exists">
+            <not>
+                <tableExists tableName="file_history"/>
+            </not>
+        </preConditions>
+        <createTable tableName="file_history">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_file_history_id"
+                             unique="true" uniqueConstraintName="uk_file_history_id"
+                             nullable="false"/>
+            </column>
+            <column name="file_id" type="bigint">
+                <constraints foreignKeyName="fk_file_history"
+                             referencedTableName="files" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="contents" type="varchar(255)">
+                <constraints uniqueConstraintName="uk_file_history_contents"
+                             nullable="false"/>
+            </column>
+            <column name="operation" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

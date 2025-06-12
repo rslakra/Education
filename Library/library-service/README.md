@@ -35,4 +35,4 @@ The following guides illustrate how to use some features concretely:
 * [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
 
 # Author
-- Rohtash Singh Lakra
+- Rohtash Lakra
