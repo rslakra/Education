@@ -45,7 +45,7 @@
     </changeSet>
 
     <!-- create index -->
-    <changeSet author="rslakra" id="create_index_on_users_roles_role_id_" context="v0.0.1">
+    <changeSet author="rslakra" id="create_index_on_users_roles_table" context="v0.0.1">
         <preConditions onFail="MARK_RAN" onFailMessage="Table [users_roles] doesn't exist">
             <tableExists tableName="users_roles"/>
         </preConditions>

@@ -25,11 +25,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="device_token" type="varchar(128)">
-                <constraints notNullConstraintName="nn_device_token" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <!-- check how to create index on this column-->
             <column name="hashed_token" type="varchar(128)">
-                <constraints notNullConstraintName="nn_hashed_token" nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="salt" type="varchar(128)">
                 <constraints nullable="false"/>

@@ -20,9 +20,6 @@
                 <constraints unique="true" uniqueConstraintName="uk_user_user_name"
                              nullable="false"/>
             </column>
-            <column name="password" type="varchar(128)">
-                <constraints nullable="false"/>
-            </column>
             <column name="email" type="varchar(64)">
                 <constraints unique="true" uniqueConstraintName="uk_user_email"
                              nullable="false"/>
@@ -37,6 +34,19 @@
             <column name="status" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
+            <column name="test_user" type="TINYINT(1)" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registered_on" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_code" type="varchar(4)"/>
+            <column name="phone_number" type="varchar(16)"/>
+            <column name="dob" type="java.util.Date"/>
+            <column name="social_identity" type="JSON"/>
+            <column name="profile_urls" type="JSON"/>
+            <column name="referral_code" type="varchar(32)"/>
+            <column name="metadata" type="JSON"/>
             <column name="created_on" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -55,34 +65,8 @@
             <column name="updated_by" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-
-            <column name="country_code" type="varchar(4)"/>
-            <column name="phone_number" type="varchar(16)"/>
-            <column name="dob" type="java.util.Date"/>
-            <column name="registered_on" type="java.util.Date"/>
-            <column name="profile_urls" type="JSON"/>
-            <column name="referral_code" type="varchar(32)"/>
-            <column name="social_identity" type="JSON"/>
-            <column name="metadata" type="JSON"/>
-            <column name="test_user" type="TINYINT(1)"/>
-            <!-- link address info-->
-
         </createTable>
-        <!--        <sql dbms="h2, oracle, mysql" endDelimiter=";"-->
-        <!--             splitStatements="true" stripComments="true">-->
-        <!--            <comment>Insert Users</comment>-->
-        <!--            INSERT INTO users (email, password, first_name, last_name, status, role, created_on, created_at, created_by,-->
-        <!--                               updated_on, updated_at, updated_by)-->
-        <!--            VALUES ('rslakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2',-->
-        <!--                    'Rothash Singh', 'Lakra', 'INACTIVE', 'ROLE_ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
-        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
-        <!--                   ('rsingh@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'Rohtash',-->
-        <!--                    'Singh', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
-        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
-        <!--                   ('rlakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'R Singh',-->
-        <!--                    'Lakra', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
-        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra');-->
-        <!--        </sql>-->
+
     </changeSet>
 
     <!-- create index -->
@@ -93,6 +77,20 @@
         <createIndex indexName="idx_users_table_email" tableName="users">
             <column name="email"/>
         </createIndex>
+    </changeSet>
+
+    <!-- insert default users -->
+    <changeSet author="rslakra" id="insert_default_users" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] doesn't exist">
+            <tableExists tableName="users"/>
+        </preConditions>
+        <sqlFile dbms="h2, oracle, mysql" encoding="UTF-8"
+                 endDelimiter=";"
+                 splitStatements="true"
+                 stripComments="true"
+                 relativeToChangelogFile="true"
+                 path="liquibase/changelog/sqls/insert_users.sql"
+        />
     </changeSet>
 
 </databaseChangeLog>

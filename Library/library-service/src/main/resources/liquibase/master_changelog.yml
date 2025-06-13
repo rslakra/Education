@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_hibernate_sequence
+      author: Rohtash Lakra
+      context: v0.0.1
+      preConditions:
+        not:
+          sequenceExists:
+            sequenceName: hibernate_sequence
+        onFail: MARK_RAN
+        onFailureMessage: "Hibernate sequence already exists."
+      changes:
+        - createSequence:
+            sequenceName: hibernate_sequence
+            incrementBy: 1
+            startValue: 1
+
+      rollback:
+        - noRollback: true
+
+  - include:
+      file: liquibase/changelog/tables/audit_logs.yml
+  - include:
+      file: liquibase/changelog/tables/roles.yml
+  - include:
+      file: liquibase/changelog/tables/users.yml
+  - include:
+      file: liquibase/changelog/tables/users_roles.yml
+  - include:
+      file: liquibase/changelog/tables/addresses.yml
+  - include:
+      file: liquibase/changelog/tables/user_security.yml
+  - include:
+      file: liquibase/changelog/tables/sessions.yml
+  - include:
+      file: liquibase/changelog/tables/files.yml
+  - include:
+      file: liquibase/changelog/tables/file_history.yml
+  - include:
+      file: liquibase/changelog/releases.yml
+

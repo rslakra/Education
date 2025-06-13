@@ -21,8 +21,7 @@
                              nullable="false"/>
             </column>
             <column name="contents" type="varchar(255)">
-                <constraints uniqueConstraintName="uk_file_history_contents"
-                             nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(32)">
                 <constraints nullable="false"/>

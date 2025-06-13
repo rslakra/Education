@@ -15,16 +15,16 @@
         <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
     </changeSet>
 
-    <include file="liquibase/changelog/tables/audit_logs.xml"/>
-    <include file="liquibase/changelog/tables/roles.xml"/>
-    <include file="liquibase/changelog/tables/users.xml"/>
-    <include file="liquibase/changelog/tables/users_roles.xml"/>
-    <include file="liquibase/changelog/tables/addresses.xml"/>
-    <include file="liquibase/changelog/tables/user_security.xml"/>
-    <include file="liquibase/changelog/tables/sessions.xml"/>
-    <include file="liquibase/changelog/tables/files.xml"/>
-    <include file="liquibase/changelog/tables/file_history.xml"/>
-    <include file="liquibase/changelog/releases.xml"/>
+    <include file="liquibase/changelog/tables/audit_logs.yml"/>
+    <include file="liquibase/changelog/tables/roles.yml"/>
+    <include file="liquibase/changelog/tables/users.yml"/>
+    <include file="liquibase/changelog/tables/users_roles.yml"/>
+    <include file="liquibase/changelog/tables/addresses.yml"/>
+    <include file="liquibase/changelog/tables/user_security.yml"/>
+    <include file="liquibase/changelog/tables/sessions.yml"/>
+    <include file="liquibase/changelog/tables/files.yml"/>
+    <include file="liquibase/changelog/tables/file_history.yml"/>
+    <include file="liquibase/changelog/releases.yml"/>
     <!--<includeAll path="liquibase/changelog/tables"/>-->
     <!--<includeAll path="liquibase/changelog/views"/>-->
 </databaseChangeLog>

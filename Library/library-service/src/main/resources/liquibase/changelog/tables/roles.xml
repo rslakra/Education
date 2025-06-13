@@ -42,22 +42,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <sql dbms="h2, oracle, mysql" endDelimiter=";"
-             splitStatements="true" stripComments="true">
-            <comment>Insert Roles</comment>
-            INSERT INTO roles (name, status, created_on, created_at, created_by, updated_on, updated_at, updated_by)
-            VALUES ('ADMIN', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
-            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
-            ('USER', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
-            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
-            ('CREATOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
-            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
-            ('COLLABORATOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
-            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
-            ('EDITOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
-            1749776630446, CURRENT_TIMESTAMP, 'rslakra');
-        </sql>
     </changeSet>
 
     <!-- create index -->
@@ -70,18 +54,18 @@
         </createIndex>
     </changeSet>
 
-    <!-- add default values -->
-    <!--    <changeSet author="rslakra" id="add_default_roles_table" context="v0.0.1">-->
-    <!--        <insert tableName="roles">-->
-    <!--            <column name="name" value="ADMIN"/>-->
-    <!--            <column name="status" value="INACTIVE"/>-->
-    <!--            <column name="created_on" value="CURRENT_TIMESTAMP"/>-->
-    <!--            <column name="created_at" value="CURRENT_TIMESTAMP"/>-->
-    <!--            <column name="created_by" value="rslakra"/>-->
-    <!--            <column name="updated_on" value="CURRENT_TIMESTAMP"/>-->
-    <!--            <column name="updated_at" value="CURRENT_TIMESTAMP"/>-->
-    <!--            <column name="updated_by" value="rslakra"/>-->
-    <!--        </insert>-->
-    <!--    </changeSet>-->
+    <!-- insert default roles -->
+    <changeSet author="rslakra" id="insert_default_roles" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] doesn't exist">
+            <tableExists tableName="roles"/>
+        </preConditions>
+        <sqlFile dbms="h2, oracle, mysql" encoding="UTF-8"
+                 endDelimiter=";"
+                 splitStatements="true"
+                 stripComments="true"
+                 relativeToChangelogFile="true"
+                 path="liquibase/changelog/sqls/insert_roles.sql"
+        />
+    </changeSet>
 
 </databaseChangeLog>
