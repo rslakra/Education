@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- create sequences -->
+    <changeSet author="rslakra" id="create_sequences">
+        <preConditions onFail="MARK_RAN" onFailMessage="Hibernate Sequence already exists">
+            <not>
+                <sequenceExists sequenceName="hibernate_sequence"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <include file="liquibase/changelog/tables/audit_logs.xml"/>
+    <include file="liquibase/changelog/tables/roles.xml"/>
+    <include file="liquibase/changelog/tables/users.xml"/>
+    <include file="liquibase/changelog/tables/users_roles.xml"/>
+    <include file="liquibase/changelog/tables/addresses.xml"/>
+    <include file="liquibase/changelog/tables/user_security.xml"/>
+    <include file="liquibase/changelog/tables/sessions.xml"/>
+    <include file="liquibase/changelog/tables/files.xml"/>
+    <include file="liquibase/changelog/tables/file_history.xml"/>
+    <include file="liquibase/changelog/releases.xml"/>
+    <!--    <includeAll path="liquibase/changelog/tables"/>-->
+    <!--    <includeAll path="liquibase/changelog/views"/>-->
+</databaseChangeLog>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- file_history -->
+    <changeSet author="rslakra" id="create_file_history_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [file_history] already exists">
+            <not>
+                <tableExists tableName="file_history"/>
+            </not>
+        </preConditions>
+        <createTable tableName="file_history">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_file_history_id"
+                             unique="true" uniqueConstraintName="uk_file_history_id"
+                             nullable="false"/>
+            </column>
+            <column name="file_id" type="bigint">
+                <constraints foreignKeyName="fk_file_history"
+                             referencedTableName="files" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="contents" type="varchar(255)">
+                <constraints uniqueConstraintName="uk_file_history_contents"
+                             nullable="false"/>
+            </column>
+            <column name="operation" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_file_history_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [file_history] doesn't exist">
+            <tableExists tableName="file_history"/>
+        </preConditions>
+        <createIndex indexName="idx_file_history_table_file_id" tableName="file_history">
+            <column name="file_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

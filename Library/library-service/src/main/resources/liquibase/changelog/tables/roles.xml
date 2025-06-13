@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- roles -->
+    <changeSet author="rslakra" id="create_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] already exists">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_role_id"
+                             unique="true" uniqueConstraintName="uk_role_id"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints unique="true" uniqueConstraintName="uk_role_name"
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)" defaultValue="INACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql dbms="h2, oracle, mysql" endDelimiter=";"
+             splitStatements="true" stripComments="true">
+            <comment>Insert Roles</comment>
+            INSERT INTO roles (name, status, created_on, created_at, created_by, updated_on, updated_at, updated_by)
+            VALUES ('ADMIN', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
+            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
+            ('USER', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
+            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
+            ('CREATOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
+            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
+            ('COLLABORATOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
+            1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
+            ('EDITOR', 'INACTIVE', 1749776630446, CURRENT_TIMESTAMP, 'rslakra',
+            1749776630446, CURRENT_TIMESTAMP, 'rslakra');
+        </sql>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] doesn't exist">
+            <tableExists tableName="roles"/>
+        </preConditions>
+        <createIndex indexName="idx_roles_table_name" tableName="roles">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- add default values -->
+    <!--    <changeSet author="rslakra" id="add_default_roles_table" context="v0.0.1">-->
+    <!--        <insert tableName="roles">-->
+    <!--            <column name="name" value="ADMIN"/>-->
+    <!--            <column name="status" value="INACTIVE"/>-->
+    <!--            <column name="created_on" value="CURRENT_TIMESTAMP"/>-->
+    <!--            <column name="created_at" value="CURRENT_TIMESTAMP"/>-->
+    <!--            <column name="created_by" value="rslakra"/>-->
+    <!--            <column name="updated_on" value="CURRENT_TIMESTAMP"/>-->
+    <!--            <column name="updated_at" value="CURRENT_TIMESTAMP"/>-->
+    <!--            <column name="updated_by" value="rslakra"/>-->
+    <!--        </insert>-->
+    <!--    </changeSet>-->
+
+</databaseChangeLog>

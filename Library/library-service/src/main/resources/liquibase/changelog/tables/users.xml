@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- users -->
+    <changeSet author="rslakra" id="create_users_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] already exists">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_id"
+                             unique="true" uniqueConstraintName="uk_user_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_user_name"
+                             nullable="false"/>
+            </column>
+            <column name="password" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_email"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(64)"/>
+            <column name="last_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="country_code" type="varchar(4)"/>
+            <column name="phone_number" type="varchar(16)"/>
+            <column name="dob" type="java.util.Date"/>
+            <column name="registered_on" type="java.util.Date"/>
+            <column name="profile_urls" type="JSON"/>
+            <column name="referral_code" type="varchar(32)"/>
+            <column name="social_identity" type="JSON"/>
+            <column name="metadata" type="JSON"/>
+            <column name="test_user" type="TINYINT(1)"/>
+            <!-- link address info-->
+
+        </createTable>
+        <!--        <sql dbms="h2, oracle, mysql" endDelimiter=";"-->
+        <!--             splitStatements="true" stripComments="true">-->
+        <!--            <comment>Insert Users</comment>-->
+        <!--            INSERT INTO users (email, password, first_name, last_name, status, role, created_on, created_at, created_by,-->
+        <!--                               updated_on, updated_at, updated_by)-->
+        <!--            VALUES ('rslakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2',-->
+        <!--                    'Rothash Singh', 'Lakra', 'INACTIVE', 'ROLE_ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--                   ('rsingh@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'Rohtash',-->
+        <!--                    'Singh', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra'),-->
+        <!--                   ('rlakra@gmail.com', '$2a$10$ewE/Ij6hx6igF5lpa88ONe63sKGvQ58BAAvY4FevbilW/FOnLI8m2', 'R Singh',-->
+        <!--                    'Lakra', 'INACTIVE', 'ROLE_USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra',-->
+        <!--                    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'rslakra');-->
+        <!--        </sql>-->
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_users_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] doesn't exist">
+            <tableExists tableName="users"/>
+        </preConditions>
+        <createIndex indexName="idx_users_table_email" tableName="users">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
