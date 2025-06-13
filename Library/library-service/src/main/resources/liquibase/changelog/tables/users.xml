@@ -84,13 +84,12 @@
         <preConditions onFail="MARK_RAN" onFailMessage="Table [users] doesn't exist">
             <tableExists tableName="users"/>
         </preConditions>
-        <sqlFile dbms="h2, oracle, mysql" encoding="UTF-8"
+        <sqlFile dbms="h2, oracle, mysql"
                  endDelimiter=";"
-                 splitStatements="true"
-                 stripComments="true"
-                 relativeToChangelogFile="true"
                  path="liquibase/changelog/sqls/insert_users.sql"
-        />
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
     </changeSet>
 
 </databaseChangeLog>
