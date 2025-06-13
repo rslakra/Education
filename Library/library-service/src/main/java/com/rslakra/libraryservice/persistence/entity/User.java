@@ -6,21 +6,13 @@ import com.rslakra.libraryservice.enums.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.*;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 /**
  * @author Rohtash Lakra
@@ -32,21 +24,47 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User extends Person {
-
+    
     @Column(name = "user_name", length = 64, unique = true, updatable = false, nullable = false)
     private String userName;
-
-    @Column(name = "password", length = 64, nullable = false)
-    private String password;
-
-    @Column(name = "status", length = 8, nullable = false)
+    
+    @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private EntityStatus status = EntityStatus.INACTIVE;
-
+    
+    @Column(name = "test_user")
+    private Boolean testUser;
+    
+    @Column(name = "registered_on", nullable = false, updatable = false)
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registeredOn;
+    
+    @Column(name = "country_code")
+    private String countryCode;
+    
+    @Column(name = "phone_number")
+    private String phoneNumber;
+    
+    @Column(name = "dob")
+    private Date dob;
+    
+    @Column(name = "social_identity")
+    private String socialIdentity;
+    
+    @Column(name = "profile_urls")
+    private String profileUrls;
+    
+    @Column(name = "referral_code")
+    private String referralCode;
+    
+    @Column(name = "metadata")
+    private String metadata;
+    
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
+    
     /**
      * Adds the <code>Set<Role></code>.
      *
@@ -57,7 +75,7 @@ public class User extends Person {
             getRoles().addAll(userRoles);
         }
     }
-
+    
     /**
      * @param userRoles
      * @return
@@ -68,9 +86,9 @@ public class User extends Person {
          * otherwise returns false if the collections contains any common elements.
          */
         return ((BeanUtils.isNotEmpty(getRoles()) && BeanUtils.isNotEmpty(userRoles)) && Collections.disjoint(
-            getRoles(), userRoles));
+                getRoles(), userRoles));
     }
-
+    
     /**
      * Returns the string representation of this object.
      *
@@ -79,14 +97,22 @@ public class User extends Person {
     @Override
     public String toString() {
         return ToString.of(User.class)
-            .add("userName", getUserName())
-            .add("password", getPassword())
-            .add("email", getEmail())
-            .add("firstName", getFirstName())
-            .add("middleName", getMiddleName())
-            .add("lastName", getLastName())
-            .add("status", getStatus())
-            .add("roles", getRoles())
-            .toString();
+                .add("userName", getUserName())
+                .add("email", getEmail())
+                .add("firstName", getFirstName())
+                .add("middleName", getMiddleName())
+                .add("lastName", getLastName())
+                .add("status", getStatus())
+                .add("testUser", getTestUser())
+                .add("registeredOn", getRegisteredOn())
+                .add("countryCode", getCountryCode())
+                .add("phoneNumber", getPhoneNumber())
+                .add("dob", getDob())
+                .add("socialIdentity", getSocialIdentity())
+                .add("profileUrls", getProfileUrls())
+                .add("referralCode", getReferralCode())
+                .add("metadata", getMetadata())
+                .add("roles", getRoles())
+                .toString();
     }
 }

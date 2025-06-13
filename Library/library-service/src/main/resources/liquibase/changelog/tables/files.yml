@@ -30,13 +30,13 @@ databaseChangeLog:
                     uniqueConstraintName: uk_file_name
                     nullable: false
               - column:
-                  name: contents
-                  type: VARCHAR(255)
+                  name: status
+                  type: VARCHAR(32)
                   constraints:
                     nullable: false
               - column:
-                  name: status
-                  type: VARCHAR(32)
+                  name: contents
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:

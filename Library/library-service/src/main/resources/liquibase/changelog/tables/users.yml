@@ -51,7 +51,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: VARCHAR(32)
+                  type: VARCHAR(16)
                   constraints:
                     nullable: false
               - column:

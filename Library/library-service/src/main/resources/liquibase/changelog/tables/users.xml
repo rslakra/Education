@@ -31,7 +31,7 @@
             <column name="last_name" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="varchar(32)">
+            <column name="status" type="varchar(16)">
                 <constraints nullable="false"/>
             </column>
             <column name="test_user" type="TINYINT(1)" defaultValueBoolean="false">
