@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ContextServiceImpl implements ContextService {
-
-    private static ApplicationContext appContext;
-
+    
+    private static ApplicationContext APP_CONTEXT;
+    
     /**
      * @param applicationContext
      * @throws BeansException
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        appContext = applicationContext;
+        APP_CONTEXT = applicationContext;
     }
-
+    
     /**
      * @param beanClass
      * @param <T>
      * @return
      */
     public static <T> T getBean(Class<T> beanClass) {
-        return appContext.getBean(beanClass);
+        return APP_CONTEXT.getBean(beanClass);
     }
 }

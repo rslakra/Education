@@ -1,9 +1,7 @@
 package com.rslakra.libraryservice.payload;
 
-import lombok.Builder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -12,19 +10,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class PayloadBuilder extends ConcurrentHashMap<String, Object> {
-
+    
     public static final String STATUS = "status";
     public static final String MESSAGE = "message";
     public static final String ERROR = "error";
     public static final String DELETED = "deleted";
-
+    
     /**
      * @return
      */
     public static PayloadBuilder builder() {
         return new PayloadBuilder();
     }
-
+    
     /**
      * @param key
      * @param value
@@ -34,7 +32,7 @@ public class PayloadBuilder extends ConcurrentHashMap<String, Object> {
         super.put(key, value);
         return this;
     }
-
+    
     /**
      * @param payloadBuilder
      * @return
@@ -43,7 +41,7 @@ public class PayloadBuilder extends ConcurrentHashMap<String, Object> {
         super.putAll(payloadBuilder);
         return this;
     }
-
+    
     /**
      * @param message
      * @return
@@ -51,7 +49,7 @@ public class PayloadBuilder extends ConcurrentHashMap<String, Object> {
     public PayloadBuilder withMessage(final String message) {
         return of(MESSAGE, message);
     }
-
+    
     /**
      * @param cause
      * @return
@@ -59,14 +57,13 @@ public class PayloadBuilder extends ConcurrentHashMap<String, Object> {
     public PayloadBuilder withCause(final Throwable cause) {
         return of(ERROR, cause.getLocalizedMessage());
     }
-
+    
     /**
-     *
      * @param isDeleted
      * @return
      */
     public PayloadBuilder withDeleted(final boolean isDeleted) {
         return of(DELETED, isDeleted);
     }
-
+    
 }

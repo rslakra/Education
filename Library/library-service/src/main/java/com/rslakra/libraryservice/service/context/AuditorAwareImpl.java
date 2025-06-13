@@ -1,8 +1,6 @@
 package com.rslakra.libraryservice.service.context;
 
 import org.springframework.data.domain.AuditorAware;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -11,9 +9,9 @@ import java.util.Optional;
  * @created 8/4/21 5:45 PM
  */
 public class AuditorAwareImpl implements AuditorAware<String> {
-
+    
     // UNKNOWN
-    private final Optional<String> UNKNOWN = Optional.of("UNKNOWN");
+    private static final Optional<String> UNKNOWN = Optional.of("UNKNOWN");
 
 //    /**
 //     * Returns the <code>Authentication</code> object.
@@ -30,7 +28,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 //    public static boolean isAuthenticated() {
 //        return getAuthentication().isAuthenticated();
 //    }
-
+    
     /**
      * TODO: Use Spring Security to return currently logged in user
      * <code>return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()</code>

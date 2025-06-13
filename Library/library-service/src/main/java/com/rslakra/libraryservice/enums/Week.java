@@ -17,28 +17,28 @@ public enum Week {
     THURSDAY(4),
     FRIDAY(5),
     SATURDAY(6);
-
-    private static final Map<Integer, Week> weekLookup = new HashMap<>();
-
+    
+    private static final Map<Integer, Week> WEEK_LOOKUP = new HashMap<>();
+    
     private int code;
-
-    private Week(int code) {
+    
+    Week(int code) {
         this.code = code;
     }
-
+    
     public int getCode() {
         return code;
     }
-
+    
     /**
      * @param code
      * @return
      */
     public static Week get(int code) {
-        if (weekLookup.isEmpty()) {
-            EnumSet.allOf(Week.class).forEach(week -> weekLookup.put(week.getCode(), week));
+        if (WEEK_LOOKUP.isEmpty()) {
+            EnumSet.allOf(Week.class).forEach(week -> WEEK_LOOKUP.put(week.getCode(), week));
         }
-
-        return weekLookup.get(code);
+        
+        return WEEK_LOOKUP.get(code);
     }
 }
