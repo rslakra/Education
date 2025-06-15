@@ -34,7 +34,7 @@ databaseChangeLog:
                   type: VARCHAR(64)
                   constraints:
                     unique: true
-                    uniqueConstraintName: uk_user_user_name
+                    uniqueConstraintName: uk_user_email
                     nullable: false
               - column:
                   name: first_name

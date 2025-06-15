@@ -1,4 +1,13 @@
 databaseChangeLog:
+  - preConditions:
+      - or:
+          - dbms:
+              type: h2
+          - dbms:
+              type: mysql
+          - dbms:
+              type: oracle
+
   - changeSet:
       id: create_hibernate_sequence
       author: Rohtash Lakra
@@ -38,4 +47,3 @@ databaseChangeLog:
       file: liquibase/changelog/tables/file_history.yml
   - include:
       file: liquibase/changelog/releases.yml
-

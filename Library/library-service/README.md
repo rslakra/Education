@@ -4,6 +4,20 @@
 [Library Service](http://localhost:9080/library-service/)
 
 
+
+## Tables
+```shell
+select * from addresses;
+select * from audit_logs;
+select * from files;
+select * from file_history;
+select * from roles;
+select * from sessions;
+select * from users;
+select * from users_roles;
+select * from user_security;
+```
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
