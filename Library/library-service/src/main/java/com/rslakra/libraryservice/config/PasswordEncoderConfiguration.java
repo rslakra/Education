@@ -1,4 +1,4 @@
-//package com.rslakra.automobile.config;
+//package com.rslakra.libraryservice.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;

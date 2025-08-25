@@ -21,7 +21,7 @@ public class File extends NamedEntity<Long> {
     
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private EntityStatus status = EntityStatus.INACTIVE;
+    private EntityStatus status = EntityStatus.DISABLED;
     
     @Column(name = "contents")
     private String contents;

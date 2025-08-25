@@ -27,7 +27,7 @@ public class Role extends NamedEntity<Long> {
 
     @Column(name = "status", length = 8, nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private EntityStatus status = EntityStatus.INACTIVE;
+    private EntityStatus status = EntityStatus.DISABLED;
 
     /**
      * @param roleType

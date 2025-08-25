@@ -6,6 +6,9 @@ package com.rslakra.libraryservice.enums;
  */
 public enum EntityStatus {
     ACTIVE,
+    /* Inactive: A current state of non-operation or non-use that may be temporary or conditional. */
     INACTIVE,
+    /* Disabled: A fundamental, configuration-level setting that prevents use. */
+    DISABLED,
     DELETED;
 }

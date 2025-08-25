@@ -25,15 +25,15 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends Person {
     
-    @Column(name = "user_name", length = 64, unique = true, updatable = false, nullable = false)
+    @Column(name = "user_name", unique = true, updatable = false, nullable = false)
     private String userName;
     
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private EntityStatus status = EntityStatus.INACTIVE;
+    private EntityStatus status = EntityStatus.DISABLED;
     
     @Column(name = "test_user")
-    private Boolean testUser;
+    private Boolean testUser = Boolean.FALSE;
     
     @Column(name = "registered_on", nullable = false, updatable = false)
     @CreatedDate
