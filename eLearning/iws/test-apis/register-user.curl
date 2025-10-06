@@ -1,0 +1,29 @@
+# POST Request - Register Account
+curl --location 'http://localhost:8080/posts-iws/rest/v1/accounts/register/' \
+--header 'User-Agent: {platform: "iOS", osVersion: "16.1", deviceType: "mobile/tablet", deviceId: "1234-5678-9014", appVersion: "1.0.0"}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "user_name": "work.lakra@gmail.com",
+    "password": "password",
+    "first_name": "first_name",
+    "last_name": "last_name",
+    "email": "work.lakra@gmail.com"
+}'
+
+#
+curl -d "username=work.lakra@gmail.com&password=password" "http://localhost:8080/posts-iws/rest/v1/accounts/register/"
+
+
+
+# Response
+{
+    "email": "work.lakra@gmail.com",
+    "first_name": "first_name",
+    "id": 1,
+    "last_name": "last_name",
+    "password": "password",
+    "user_name": "work.lakra@gmail.com"
+}
+
+
+
