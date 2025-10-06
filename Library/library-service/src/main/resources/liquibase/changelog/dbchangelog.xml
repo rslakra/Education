@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Global or changelog preconditions are defined at the top of the changelog, prior to any changesets. -->
+    <preConditions onError="HALT" onErrorMessage="Only Supports H2 or MySQL Databases"
+                   onFail="HALT" onFailMessage="Only Supports H2 or MySQL Databases">
+        <dbms type="h2, mysql"/>
+        <!--<sqlCheck expectedResult="9.1.0">-->
+        <!--    SELECT @@version;-->
+        <!--</sqlCheck>-->
+    </preConditions>
+
+    <!-- create hibernate sequence -->
+    <changeSet author="rslakra" id="create_hibernate_sequence">
+        <preConditions onFail="MARK_RAN" onFailMessage="Hibernate Sequence already exists">
+            <not>
+                <sequenceExists sequenceName="hibernate_sequence"/>
+            </not>
+        </preConditions>
+        <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+
+    <!-- audit_logs -->
+    <changeSet author="rslakra" id="create_audit_logs_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [audit_logs] already exists">
+            <not>
+                <tableExists tableName="audit_logs"/>
+            </not>
+        </preConditions>
+        <createTable tableName="audit_logs">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_audit_log_id"
+                             unique="true" uniqueConstraintName="uk_audit_log_id"
+                             nullable="false"/>
+            </column>
+            <column name="table_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="column_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="column_id" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="old_value" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="new_value" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="rslakra" id="create_index_on_audit_logs_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [audit_logs] doesn't exist">
+            <tableExists tableName="audit_logs"/>
+        </preConditions>
+        <createIndex indexName="idx_audit_logs_table_name_column_name_column_id" tableName="audit_logs">
+            <column name="table_name"/>
+            <column name="column_name"/>
+            <column name="column_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- roles -->
+    <changeSet author="rslakra" id="create_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] already exists">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_role_id"
+                             unique="true" uniqueConstraintName="uk_role_id"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)">
+                <constraints unique="true" uniqueConstraintName="uk_role_name"
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)" defaultValue="INACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] doesn't exist">
+            <tableExists tableName="roles"/>
+        </preConditions>
+        <createIndex indexName="idx_roles_table_name" tableName="roles">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- insert default roles -->
+<!--    <changeSet author="rslakra" id="insert_default_roles" context="v0.0.1">-->
+<!--        <preConditions onFail="MARK_RAN" onFailMessage="Table [roles] doesn't exist">-->
+<!--            <tableExists tableName="roles"/>-->
+<!--        </preConditions>-->
+<!--        <sqlFile dbms="h2, oracle, mysql"-->
+<!--                 endDelimiter=";"-->
+<!--                 path="./liquibase/changelog/sqls/insert_roles.sql"-->
+<!--                 relativeToChangelogFile="true"-->
+<!--                 splitStatements="true"-->
+<!--                 stripComments="true"/>-->
+<!--    </changeSet>-->
+
+
+    <!-- users -->
+    <changeSet author="rslakra" id="create_users_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] already exists">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_id"
+                             unique="true" uniqueConstraintName="uk_user_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_user_name"
+                             nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_user_email"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(64)"/>
+            <column name="last_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="test_user" type="TINYINT(1)" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registered_on" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_code" type="varchar(4)"/>
+            <column name="phone_number" type="varchar(16)"/>
+            <column name="dob" type="java.util.Date"/>
+            <column name="social_identity" type="JSON"/>
+            <column name="profile_urls" type="JSON"/>
+            <column name="referral_code" type="varchar(32)"/>
+            <column name="metadata" type="JSON"/>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_users_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] doesn't exist">
+            <tableExists tableName="users"/>
+        </preConditions>
+        <createIndex indexName="idx_users_table_email" tableName="users">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- insert default users -->
+<!--    <changeSet author="rslakra" id="insert_default_users" context="v0.0.1">-->
+<!--        <preConditions onFail="MARK_RAN" onFailMessage="Table [users] doesn't exist">-->
+<!--            <tableExists tableName="users"/>-->
+<!--        </preConditions>-->
+<!--        <sqlFile dbms="h2, oracle, mysql"-->
+<!--                 endDelimiter=";"-->
+<!--                 path="liquibase/changelog/sqls/insert_users.sql"-->
+<!--                 relativeToChangelogFile="true"-->
+<!--                 splitStatements="true"-->
+<!--                 stripComments="true"/>-->
+<!--    </changeSet>-->
+
+
+    <!-- users_roles -->
+    <changeSet author="rslakra" id="create_users_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users_roles] already exists">
+            <not>
+                <tableExists tableName="users_roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users_roles">
+            <column name="role_id" type="bigint">
+                <constraints nullable="false" notNullConstraintName="nn_users_roles_role_id"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" notNullConstraintName="nn_users_roles_user_id"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="role_id"
+                                 constraintName="fk_users_roles_role_id"
+                                 referencedTableName="roles" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="user_id"
+                                 constraintName="fk_users_roles_user_id"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_users_roles_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [users_roles] doesn't exist">
+            <tableExists tableName="users_roles"/>
+        </preConditions>
+        <createIndex indexName="idx_users_roles_table_role_id_user_id" tableName="users_roles">
+            <column name="role_id"/>
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- addresses -->
+    <changeSet author="rslakra" id="create_addresses_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [addresses] already exists">
+            <not>
+                <tableExists tableName="addresses"/>
+            </not>
+        </preConditions>
+        <createTable tableName="addresses">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_address_id"
+                             unique="true" uniqueConstraintName="uk_address_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_user_addresses"
+                             referencedTableName="users" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="street1" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street2" type="varchar(64)"/>
+            <column name="city" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip_code" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extra_info" type="JSON"/>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_addresses_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [addresses] doesn't exist">
+            <tableExists tableName="addresses"/>
+        </preConditions>
+        <createIndex indexName="idx_addresses_table_user_id" tableName="addresses">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- user_security -->
+    <changeSet author="rslakra" id="create_user_security_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [user_security] already exists">
+            <not>
+                <tableExists tableName="user_security"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_security">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_security_id"
+                             unique="true" uniqueConstraintName="uk_user_security_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_users_user_security"
+                             referencedTableName="users" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="platform" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_token" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <!-- check how to create index on this column-->
+            <column name="hashed_token" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salt" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expired_at" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="social_identity" type="JSON"/>
+            <column name="metadata" type="JSON"/>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_user_security_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [user_security] doesn't exist">
+            <tableExists tableName="user_security"/>
+        </preConditions>
+        <createIndex indexName="idx_user_security_table_user_id" tableName="user_security">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- sessions -->
+    <changeSet author="rslakra" id="create_sessions_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [sessions] already exists">
+            <not>
+                <tableExists tableName="sessions"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sessions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_session_id"
+                             unique="true" uniqueConstraintName="uk_session_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="fk_users_session"
+                             referencedTableName="users" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="start_time" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="TINYINT(1)" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="metadata" type="JSON"/>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_sessions_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [sessions] doesn't exist">
+            <tableExists tableName="sessions"/>
+        </preConditions>
+        <createIndex indexName="idx_sessions_table_user_id" tableName="sessions">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- files -->
+    <changeSet author="rslakra" id="create_files_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [files] already exists">
+            <not>
+                <tableExists tableName="files"/>
+            </not>
+        </preConditions>
+        <createTable tableName="files">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_file_id"
+                             unique="true" uniqueConstraintName="uk_file_id"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_file_name"
+                             nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contents" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_files_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [files] doesn't exist">
+            <tableExists tableName="files"/>
+        </preConditions>
+        <createIndex indexName="idx_files_table_name" tableName="files">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+
+    <!-- file_history -->
+    <changeSet author="rslakra" id="create_file_history_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [file_history] already exists">
+            <not>
+                <tableExists tableName="file_history"/>
+            </not>
+        </preConditions>
+        <createTable tableName="file_history">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_file_history_id"
+                             unique="true" uniqueConstraintName="uk_file_history_id"
+                             nullable="false"/>
+            </column>
+            <column name="file_id" type="bigint">
+                <constraints foreignKeyName="fk_file_file_history"
+                             referencedTableName="files" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="contents" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="operation" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="java.sql.Timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- create index -->
+    <changeSet author="rslakra" id="create_index_on_file_history_table" context="v0.0.1">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table [file_history] doesn't exist">
+            <tableExists tableName="file_history"/>
+        </preConditions>
+        <createIndex indexName="idx_file_history_table_file_id" tableName="file_history">
+            <column name="file_id"/>
+        </createIndex>
+    </changeSet>
+
+    <include file="liquibase/changelog/releases.xml"/>
+
+</databaseChangeLog>
