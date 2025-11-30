@@ -8,10 +8,31 @@
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" media="all" href="../../static/css/styles.css" th:href="@{/css/styles.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css"
-          th:href="@{/css/form-styles.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css" th:href="@{/css/form-styles.css}"/>
 </head>
 <body>
-<nav th:fragment="header" class="header">Nav</nav>
+
+<nav th:fragment="header" class="navbar">
+    <div class="navbar-container">
+        <!-- Logo/Brand -->
+        <a href="/" th:href="@{/}" class="navbar-brand">
+            <span class="brand-icon">📖</span>
+            <span class="brand-text">Library Client</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <ul class="navbar-menu">
+            <li><a href="/" th:href="@{/}" class="nav-link">Home</a></li>
+            <li><a href="/users/list" th:href="@{/users/list}" class="nav-link">Users</a></li>
+        </ul>
+
+        <!-- Right side - Service Link -->
+        <div class="navbar-auth">
+            <a href="http://localhost:9080/library-service" th:href="${@environment.getProperty('libraryService.loginUrl')}" 
+               class="nav-link auth-btn login-btn" target="_blank">Library Service</a>
+        </div>
+    </div>
+</nav>
+
 </body>
 </html>

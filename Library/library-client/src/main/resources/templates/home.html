@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!--    <div th:insert="fragments/header :: header">Header</div>-->
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -13,41 +8,45 @@
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/form-styles.css" th:href="@{/css/form-styles.css}"/>
 
     <!-- Title -->
-    <title>The Library Service</title>
+    <title>Library Client - Home</title>
 </head>
-
-<!--<header class="header">-->
-<!--    <div th:insert="~{fragments/header::header}"></div>-->
-<!--</header>-->
-
 <body>
 
-<div class="container" th:fragment="content">
-    <!-- Logo and Header -->
-    <div class="center">
-        <img src="../static/images/logo.png" alt="Library Service Logo" title="Library Service Logo"
-             th:src="@{/images/logo.png}"/>
-        <h1>The Library Client welcomes you.</h1>
+<!-- Header -->
+<nav th:replace="~{fragments/header::header}">Header</nav>
+
+<!-- Body Container -->
+<div class="body-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <h1>📖 Welcome to Library Client</h1>
+        <p>A REST client application for the Library Service. Manage users and access library data through a clean interface.</p>
+        
+        <div class="quick-actions">
+            <a class="button button-success" th:href="@{/users/list}">View Users</a>
+            <a class="button" href="http://localhost:9080/library-service" target="_blank">Open Library Service</a>
+        </div>
     </div>
 
-    <div class="padding-default">
-        <p>Please select an option</p>
-        <div>
-            <a class="button" href="listUsers.html" th:href="@{/users/list}">List Users</a>
-        </div>
+    <!-- Features Section -->
+    <div class="card" style="max-width: 800px; margin: 2rem auto;">
+        <h3 style="margin-bottom: 1rem;">Features</h3>
+        <ul style="list-style-position: inside; color: var(--text-light);">
+            <li style="margin-bottom: 0.5rem;">View and manage users via REST API</li>
+            <li style="margin-bottom: 0.5rem;">Secure communication with Library Service using Basic Auth</li>
+            <li style="margin-bottom: 0.5rem;">Modern, responsive user interface</li>
+            <li style="margin-bottom: 0.5rem;">Built with Spring Boot 3.5.7</li>
+        </ul>
     </div>
 </div>
 
-</body>
-
 <!-- Footer -->
-<!--<div th:replace="~{fragments/footer::footer}">Footer</div>-->
-
 <footer class="footer">
     <div th:insert="~{fragments/footer::footer}"></div>
 </footer>
 
+</body>
 </html>
-

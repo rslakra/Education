@@ -38,17 +38,25 @@ public class SecurityConfiguration {
                 .requestMatchers("/error").permitAll()
                 // Allow static resources
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                // REST API endpoints require authentication (Basic Auth for external clients)
+                .requestMatchers("/v1/**", "/rest/**", "/api/**").authenticated()
                 // Require authentication for everything else
                 .anyRequest().authenticated()
             )
-            // Disable CSRF for H2 console (it doesn't support CSRF tokens)
+            // Disable CSRF for H2 console and REST API (REST APIs are stateless)
             .csrf(csrf -> csrf
                 .ignoringRequestMatchers(PathRequest.toH2Console())
+                .ignoringRequestMatchers("/v1/**", "/rest/**", "/api/**")
             )
             // Allow frames from same origin for H2 console (it uses iframes)
             .headers(headers -> headers
                 .frameOptions(frame -> frame.sameOrigin())
             )
+            // HTTP Basic authentication for REST API clients
+            .httpBasic(basic -> {
+                
+             })
+            // Form login for web UI
             .formLogin(form -> form
                 .loginPage("/login")
                 .permitAll()

@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- /*  Multiple fragments may be defined in one file */-->
+
+<!-- Standard Footer -->
 <div th:fragment="footer" class="footer">
-    &copy; 2021 The Library Service
+    <p>&copy; 2025 Library Client. All rights reserved.</p>
+    <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+        Built with Spring Boot 3.5.7 | 
+        <a href="http://localhost:9080/library-service" target="_blank">Library Service</a>
+    </p>
 </div>
+
+<!-- Admin Footer -->
 <div th:fragment="footer-admin" class="footer">
-    &copy; 2021 The Admin Library Service
+    <p>&copy; 2025 Library Client - Admin Portal</p>
 </div>
 
 </body>
 </html>
-
