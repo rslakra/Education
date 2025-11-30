@@ -1,52 +1,70 @@
-# Getting Started
+# Library Service
 
-## Service Url
-[Library Service](http://localhost:9080/library-service/)
+The **library-service** is the backend REST API and web application for the Library system.
 
+> For overall project documentation, see the [Library README](../README.md).
 
+## Service URLs
 
-## Tables
-```shell
-select * from addresses;
-select * from audit_logs;
-select * from files;
-select * from file_history;
-select * from roles;
-select * from sessions;
-select * from users;
-select * from users_roles;
-select * from user_security;
+| Resource | URL |
+|----------|-----|
+| Home | http://localhost:9080/library-service/ |
+| Swagger UI | http://localhost:9080/library-service/swagger-ui/index.html |
+| API Docs | http://localhost:9080/library-service/v3/api-docs |
+| H2 Console | http://localhost:9080/library-service/h2 |
+| Login | http://localhost:9080/library-service/login |
+
+## Build & Run
+
+```bash
+# Build
+./buildMaven.sh
+
+# Run
+./runMaven.sh
 ```
 
-### Reference Documentation
+## Configuration
 
-For further reference, please consider the following sections:
+Key properties in `application.properties`:
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.5.4/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.5.4/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.4/reference/htmlsingle/#boot-features-developing-web-applications)
-* [Rest Repositories](https://docs.spring.io/spring-boot/docs/2.5.4/reference/htmlsingle/#howto-use-exposing-spring-data-repositories-rest-endpoint)
-* [Thymeleaf](https://docs.spring.io/spring-boot/docs/2.5.4/reference/htmlsingle/#boot-features-spring-mvc-template-engines)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.4/reference/htmlsingle/#boot-features-jpa-and-spring-data)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.5.4/reference/htmlsingle/#boot-features-security)
+| Property | Value | Description |
+|----------|-------|-------------|
+| `server.port` | 9080 | Server port |
+| `server.servlet.contextPath` | /library-service | Context path |
+| `spring.security.user.name` | admin | Default username |
+| `spring.security.user.password` | Admin123 | Default password |
 
-### Guides
+## Security
 
-The following guides illustrate how to use some features concretely:
+- **Web UI**: Form-based login at `/login`
+- **REST API** (`/v1/**`): HTTP Basic Authentication
+- **H2 Console**: Publicly accessible (CSRF disabled)
+- **Swagger UI**: Publicly accessible
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
-* [Accessing JPA Data with REST](https://spring.io/guides/gs/accessing-data-rest/)
-* [Accessing Neo4j Data with REST](https://spring.io/guides/gs/accessing-neo4j-data-rest/)
-* [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Handling Form Submission](https://spring.io/guides/gs/handling-form-submission/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
+## Database Tables
 
-# Author
+```sql
+SELECT * FROM addresses;
+SELECT * FROM audit_logs;
+SELECT * FROM files;
+SELECT * FROM file_history;
+SELECT * FROM roles;
+SELECT * FROM sessions;
+SELECT * FROM users;
+SELECT * FROM users_roles;
+SELECT * FROM user_security;
+```
+
+## REST API Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/v1/users` | User management |
+| `/v1/roles` | Role management |
+| `/v1/files` | File management |
+| `/v1/books` | Book management |
+
+## Author
+
 - Rohtash Lakra
