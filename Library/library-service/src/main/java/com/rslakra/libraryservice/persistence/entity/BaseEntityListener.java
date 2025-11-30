@@ -3,10 +3,10 @@ package com.rslakra.libraryservice.persistence.entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
-import javax.transaction.Transactional;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.PreUpdate;
+import jakarta.transaction.Transactional;
 
 /**
  * @author Rohtash Lakra

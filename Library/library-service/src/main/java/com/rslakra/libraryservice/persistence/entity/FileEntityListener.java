@@ -4,8 +4,8 @@ import com.rslakra.libraryservice.service.context.ContextServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 /**
  * @author Rohtash Lakra

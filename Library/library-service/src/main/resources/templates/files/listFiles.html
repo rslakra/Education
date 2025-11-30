@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,14 +11,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Title -->
-    <title>The Abbreviations</title>
+    <title>Files - Library Service</title>
 </head>
 <body>
+
+<!-- Header -->
+<nav th:replace="~{fragments/header :: header}">Header</nav>
+
 <!-- Body Container -->
 <div class="body-container">
-    <!-- New File -->
-    <div>
-        <a class="button" href="editFile.html" th:href="@{/files/create}">New File</a>
+    <h2>Files Management</h2>
+    
+    <!-- Top Button Toolbar -->
+    <div class="button-toolbar button-toolbar-top">
+        <a class="button" href="editFile.html" th:href="@{/files/create}">+ New File</a>
     </div>
 
     <div th:switch="${files}">
@@ -35,8 +40,8 @@
             <tbody>
             <div th:case="${files.size() == 0}">
                 <tr>
-                    <td colspan="9">
-                        <h2>No Records Found!</h2>
+                    <td colspan="4">
+                        <h3 class="text-muted text-center">No Records Found!</h3>
                     </td>
                 </tr>
             </div>
@@ -46,11 +51,11 @@
                     <td th:text="${file.name}"/>
                     <td th:text="${file.contents}"/>
                     <td class="action-button">
-                        <a class="action-button-padding" th:href="@{/files/update/{id}(id=${file.id})}">
-                            <i class="fa fa-pencil" style="font-size:24px;color:red"></i>
+                        <a class="action-button-padding" th:href="@{/files/update/{id}(id=${file.id})}" title="Edit">
+                            <i class="fa fa-pencil" style="font-size:20px;color:#2c5282"></i>
                         </a>
-                        <a class="action-button-padding" th:href="@{/files/delete/{id}(id=${file.id})}">
-                            <i class="fa fa-trash" style="font-size:24px;color:red"></i>
+                        <a class="action-button-padding" th:href="@{/files/delete/{id}(id=${file.id})}" title="Delete">
+                            <i class="fa fa-trash" style="font-size:20px;color:#c53030"></i>
                         </a>
                     </td>
                 </tr>
@@ -59,19 +64,19 @@
         </table>
     </div>
 
-    <!--Back Button -->
-    <div>
-        <a class="button" href="../home.html" th:href="@{/}">Back</a>
+    <!-- Bottom Button Toolbar - commented out as navbar provides navigation -->
+    <!--
+    <div class="button-toolbar button-toolbar-bottom">
+        <a class="button" href="../home.html" th:href="@{/}">← Back to Home</a>
     </div>
+    -->
 
 </div>
 
-</body>
-
 <!-- Footer -->
-<!--<div th:replace="~{fragments/footer::footer}">Footer</div>-->
 <footer class="footer">
     <div th:insert="~{fragments/footer::footer}"></div>
 </footer>
 
+</body>
 </html>

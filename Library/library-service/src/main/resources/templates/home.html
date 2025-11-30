@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!--    <div th:insert="fragments/header :: header">Header</div>-->
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -14,42 +9,56 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
 
-    <!-- Title -->
     <title>The Library Service</title>
 </head>
-
-<!--<header class="header">-->
-<!--    <div th:insert="~{fragments/header::header}"></div>-->
-<!--</header>-->
-
 <body>
 
+<!-- Header -->
+<nav th:replace="~{fragments/header :: header}">Header</nav>
+
 <div class="container" th:fragment="content">
-    <!-- Logo and Header -->
-    <div class="center">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
         <img src="../static/images/logo.png" alt="The Library Service" title="The Library Service"
-             th:src="@{/images/logo.png}"/>
-        <h1>The Library Service welcomes you.</h1>
+             th:src="@{/images/logo.png}" class="logo"/>
+        <h1>Welcome to The Library Service</h1>
+        <p>Manage your library resources efficiently. Browse roles, users, and files with our easy-to-use interface.</p>
     </div>
 
-    <div class="padding-default">
-        <p>Please select an option</p>
-        <div>
-            <a class="button" href="roles/listRoles.html" th:href="@{/roles/list}">List Roles</a>
-            <a class="button" href="users/listUsers.html" th:href="@{/users/list}">List Users</a>
-            <a class="button" href="files/listFiles.html" th:href="@{/files/list}">List Files</a>
+    <!-- Quick Actions -->
+    <div class="card">
+        <h2 class="text-center">Quick Actions</h2>
+        <div class="quick-actions">
+            <a class="button" href="roles/listRoles.html" th:href="@{/roles/list}">
+                📋 List Roles
+            </a>
+            <a class="button" href="users/listUsers.html" th:href="@{/users/list}">
+                👥 List Users
+            </a>
+            <a class="button" href="files/listFiles.html" th:href="@{/files/list}">
+                📁 List Files
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="card mt-3">
+        <h2 class="text-center">Features</h2>
+        <div class="padding-default">
+            <ul style="list-style: none; text-align: center;">
+                <li class="mb-2">✅ Role-based access control</li>
+                <li class="mb-2">✅ User management</li>
+                <li class="mb-2">✅ File storage & tracking</li>
+                <li class="mb-2">✅ RESTful API with Swagger documentation</li>
+            </ul>
         </div>
     </div>
 </div>
 
-</body>
-
 <!-- Footer -->
-<!--<div th:replace="~{fragments/footer::footer}">Footer</div>-->
-
 <footer class="footer">
-    <div th:insert="~{fragments/footer::footer}"></div>
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </footer>
 
+</body>
 </html>
-

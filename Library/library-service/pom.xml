@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.7</version>
         <!-- lookup parent from a repository -->
         <relativePath/>
     </parent>
@@ -46,7 +46,7 @@
         <appsuite-core.version>0.0.74</appsuite-core.version>
 
         <!-- appsuite-spring -->
-        <appsuite-spring.version>0.0.23</appsuite-spring.version>
+        <appsuite-spring.version>0.0.29</appsuite-spring.version>
 
         <!-- lombok -->
         <lombok.version>1.18.34</lombok.version>
@@ -171,18 +171,14 @@
         <!-- Swagger Open API Specification -->
         <!-- http://localhost:8080/libraryservice/swagger-ui.html -->
         <!-- http://localhost:8080/libraryservice/v3/api-docs -->
-        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.10</version>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.7.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-data-rest</artifactId>
-            <version>1.5.10</version>
-        </dependency>
+        <!-- Note: data-rest support is included automatically with Spring Boot 3.x when using spring-data-rest -->
 
         <dependency>
             <groupId>org.webjars</groupId>

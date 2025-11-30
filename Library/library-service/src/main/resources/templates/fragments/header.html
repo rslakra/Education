@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -8,10 +10,37 @@
 
     <!-- css -->
     <link rel="stylesheet" type="text/css" media="all" href="../../static/css/styles.css" th:href="@{/css/styles.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css"
-          th:href="@{/css/form-styles.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css" th:href="@{/css/form-styles.css}"/>
 </head>
 <body>
-<nav th:fragment="header" class="header">Nav</nav>
+
+<nav th:fragment="header" class="navbar">
+    <div class="navbar-container">
+        <!-- Logo/Brand -->
+        <a href="/" th:href="@{/}" class="navbar-brand">
+            <span class="brand-icon">📚</span>
+            <span class="brand-text">Library Service</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <ul class="navbar-menu">
+            <li><a href="/" th:href="@{/}" class="nav-link">Home</a></li>
+            <li><a href="/roles/list" th:href="@{/roles/list}" class="nav-link">Roles</a></li>
+            <li><a href="/users/list" th:href="@{/users/list}" class="nav-link">Users</a></li>
+            <li><a href="/files/list" th:href="@{/files/list}" class="nav-link">Files</a></li>
+            <li><a href="/h2" th:href="@{/h2}" class="nav-link">H2 Console</a></li>
+            <li><a href="/swagger-ui/index.html" th:href="@{/swagger-ui/index.html}" class="nav-link">API Docs</a></li>
+        </ul>
+
+        <!-- Right side - Login/Logout -->
+        <div class="navbar-auth">
+            <a href="/login" th:href="@{/login}" class="nav-link auth-btn login-btn">Login</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="nav-link auth-btn logout-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
 </body>
 </html>

@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- css -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     <link rel="stylesheet" type="text/css" media="all" href="../../static/css/styles.css" th:href="@{/css/styles.css}"/>
-    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css"
-          th:href="@{/css/form-styles.css}"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../../static/css/form-styles.css" th:href="@{/css/form-styles.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Title -->
-    <title>Add/Update Role</title>
+    <title th:text="${role.id == null} ? 'Create Role' : 'Update Role'">Role - Library Service</title>
 </head>
 <body>
+
+<!-- Header -->
+<nav th:replace="~{fragments/header :: header}">Header</nav>
+
 <!-- Body Container -->
 <div class="body-container">
+    <h2>
+        <span th:text="${role.id == null} ? 'Create' : 'Update'">Create</span> Role
+    </h2>
 
     <!-- Form -->
     <div class="form-style">
-        <h2 class="center">
-            <!-- if role.getId() is null -->
-            <span th:text="${role.id == null} ? 'Create ' : 'Update '"/> Role
-        </h2>
         <form action="#" th:action="@{/roles/save}" th:object="${role}" method="post">
-            <input type="hidden" name="id" th:field="*{id}">
-            <div class="section"><span>*</span>Role Details</div>
+            <input type="hidden" name="id" th:if="${role.id != null}" th:field="*{id}">
+            
+            <div class="section"><span>1</span> Role Details</div>
             <div class="inner-wrap">
                 <label>Name
-                    <input type="text" th:field="*{name}" name="name" placeholder="Name"/>
+                    <input type="text" th:field="*{name}" name="name" placeholder="Enter role name" required/>
                 </label>
                 <label>Status
-                    <input type="text" th:field="*{status}" name="status" placeholder="Status"/>
+                    <input type="text" th:field="*{status}" name="status" placeholder="Enter status"/>
                 </label>
             </div>
 
             <div class="button-section">
-                <input type="submit" name="Submit"/>
+                <input type="submit" value="Save Role"/>
             </div>
         </form>
-
     </div>
 
-    <!--Back Button -->
-    <div>
-        <a class="button" href="listRoles.html" th:href="@{/roles/list}">Back</a>
+    <!-- Bottom Button Toolbar - commented out as navbar provides navigation -->
+    <!--
+    <div class="button-toolbar button-toolbar-bottom">
+        <a class="button" href="listRoles.html" th:href="@{/roles/list}">← Back to Roles</a>
     </div>
+    -->
 
 </div>
 
-</body>
-
 <!-- Footer -->
-<!--<div th:replace="~{fragments/footer::footer}">Footer</div>-->
 <footer class="footer">
     <div th:insert="~{fragments/footer::footer}"></div>
 </footer>
+
+</body>
 </html>

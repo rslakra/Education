@@ -5,4 +5,4 @@ CURRENT_TIMESTAMP, 'rslakra', 1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
     (2, 'rlakra@gmail.com', 'rlakra@gmail.com', 'Roh', 'Lak', 'INACTIVE', true, CURRENT_TIMESTAMP, 1749776630446,
     CURRENT_TIMESTAMP, 'rslakra', 1749776630446, CURRENT_TIMESTAMP, 'rslakra'),
     (3, 'rsingh@gmail.com', 'rsingh@gmail.com', 'Roh', 'Lak', 'INACTIVE', true, CURRENT_TIMESTAMP, 1749776630446,
-    CURRENT_TIMESTAMP, 'rslakra', 1749776630446, CURRENT_TIMESTAMP, 'rslakra')
+    CURRENT_TIMESTAMP, 'rslakra', 1749776630446, CURRENT_TIMESTAMP, 'rslakra');
