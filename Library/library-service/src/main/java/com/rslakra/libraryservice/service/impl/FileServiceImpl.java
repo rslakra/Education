@@ -131,7 +131,7 @@ public class FileServiceImpl extends AbstractServiceImpl<File, Long> implements 
      * @return
      */
     @Override
-    public List<File> getByFilter(Filter filter) {
+    public List<File> getByFilter(Filter<File> filter) {
         return getByFilter(filter, null).getContent();
     }
 
@@ -141,7 +141,7 @@ public class FileServiceImpl extends AbstractServiceImpl<File, Long> implements 
      * @return
      */
     @Override
-    public Page<File> getByFilter(Filter filter, Pageable pageable) {
+    public Page<File> getByFilter(Filter<File> filter, Pageable pageable) {
         return fileRepository.findAll(pageable);
     }
 
