@@ -66,7 +66,7 @@ class Utils(BaseEnum):
         _watcher.start()
         response = requests.get(url)
         _watcher.stop()
-        elapsed = _watcher.elapsed()
+        elapsed = _watcher.duration
         ttfb = elapsed * 1000  # Convert to milliseconds
         return ttfb
 
